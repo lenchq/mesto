@@ -5,3 +5,32 @@
 	box-sizing: border-box;
 	position: relative;
 }
+
+.element__control-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.element__control-button_type_info {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 22px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.element__control-button_type_info::after {
+    content: 'i';
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: serif;
+}

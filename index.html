@@ -28,6 +28,7 @@
 	<template id="card-template">
 		<div class="element">
 			<button type="button" class="element__delete-button"></button>
+			<button type="button" class="element__control-button element__control-button_type_info"></button>
 			<img alt="фото" class="element__photo">
 			<div class="element__text">
 				<h2 class="element__title"></h2>
@@ -49,8 +50,11 @@
 			<form class="popup__form">
 				<h3 class="popup__title">Редактировать профиль</h3>
 				<input type="text" name="user-name" class="popup__user-name">
+				<span class="popup__error popup__error_user-name"></span>
 				<input type="text" name="user-jop" class="popup__user-jop">
+				<span class="popup__error popup__error_user-jop"></span>
 				<input type="url" name="user-avatar" class="popup__user-avatar" placeholder="Ссылка на аватар">
+				<span class="popup__error popup__error_user-avatar"></span>
 				<button type="submit" class="popup__save-button">Сохранить</button>
 			</form>
 		</section>
@@ -61,12 +65,38 @@
 			<button class="popup__close-button popup__close-button_add"></button>
 			<form class="popup__form popup__form_add">
 				<h3 class="popup__title">Новое место</h3>
-				<input type="text" name="card-name" class="popup__card-name" placeholder="Название">
+				<input type="text" name="card-name" class="popup__card-name" placeholder="Название" minlength="2">
+				<span class="popup__error popup__error_card-name"></span>
 				<input type="url" name="card-link" class="popup__card-link" placeholder="Ссылка на картинку">
+				<span class="popup__error popup__error_card-link"></span>
 				<button type="submit" class="popup__save-button">Создать</button>
 			</form>
 		</section>
 	</div>
+
+	<div id="card-info-popup" class="popup popup_type_info">
+		<section class="popup__window">
+			<button class="popup__close-button"></button>
+			<div class="popup-info">
+				<h3 class="popup-info__title">Информация о карточке</h3>
+				<ul class="popup-info__list"></ul>
+				<p class="popup-info__liked-title">Лайкнули:</p>
+				<ul class="popup-info__liked-list"></ul>
+			</div>
+		</section>
+	</div>
+
+	<template id="popup-info-definition-template">
+		<li class="popup-info__item">
+			<span class="popup-info__term"></span>
+			<span class="popup-info__description"></span>
+		</li>
+	</template>
+
+	<template id="popup-info-user-template">
+		<li class="popup-info__user-chip"></li>
+	</template>
+
 	<script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

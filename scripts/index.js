@@ -11,6 +11,7 @@ import {
 const popups = document.querySelectorAll(".popup");
 const editProfilePopup = document.querySelector("#edit-profile-popup");
 const addPopup = document.querySelector("#add-card-popup");
+const cardInfoPopup = document.querySelector("#card-info-popup");
 
 const editProfile = document.querySelector(".edit-profile"); //переменная открыть редактирование профиля
 // const closeButton = popups.querySelector(".popup__close-button"); //переменная закрыть редактирование
@@ -31,9 +32,23 @@ let cardLinkInput = addPopup.querySelector(".popup__card-link");
 
 function openEditProfilePopup() {
   editProfilePopup.classList.add("popup_opened");
+  // Clear any previous errors
+  const errorSpans = editProfilePopup.querySelectorAll(".popup__error");
+  errorSpans.forEach(span => span.textContent = "");
 }
 function openAddCardPopup() {
   addPopup.classList.add("popup_opened");
+  // Clear any previous errors
+  const errorSpans = addPopup.querySelectorAll(".popup__error");
+  errorSpans.forEach(span => span.textContent = "");
+}
+
+function closePopup() {
+  editProfilePopup.classList.remove("popup_opened");
+}
+
+function closeAddPopup() {
+  addPopup.classList.remove("popup_opened");
 }
 for (const popup of popups) {
   popup.querySelector(".popup__close-button").addEventListener("click", () => {
@@ -44,6 +59,7 @@ for (const popup of popups) {
 const setInputValidation = (inputElement) => {
   const form = inputElement.closest("form");
   const submitButton = form.querySelector('button[type="submit"]');
+  const errorSpan = inputElement.nextElementSibling;
 
   const checkFormValidity = () => {
     const inputs = Array.from(form.querySelectorAll("input"));
@@ -55,8 +71,10 @@ const setInputValidation = (inputElement) => {
   inputElement.addEventListener("input", () => {
     if (!inputElement.validity.valid) {
       inputElement.style.borderBottomColor = "red";
+      errorSpan.textContent = inputElement.validationMessage;
     } else {
       inputElement.style.borderBottomColor = "rgba(0,0,0,0.2)";
+      errorSpan.textContent = "";
     }
     checkFormValidity();
   });
@@ -97,6 +115,11 @@ let formElement = document.querySelector(".popup__form"); // Воспользу�
 function formSubmitHandler(evt) {
   evt.preventDefault();
 
+  const submitButton = evt.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
+  submitButton.disabled = true;
+
   const promises = [];
 
   promises.push(
@@ -122,6 +145,10 @@ function formSubmitHandler(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
     });
 }
 
@@ -132,6 +159,11 @@ formElement.addEventListener("submit", formSubmitHandler);
 // Обработчик формы добавления карточки
 function addFormSubmitHandler(evt) {
   evt.preventDefault();
+
+  const submitButton = evt.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Создание...';
+  submitButton.disabled = true;
 
   addCard({
     name: cardNameInput.value,
@@ -145,6 +177,7 @@ function addFormSubmitHandler(evt) {
         newCard,
         cardTemplate,
         currentUserId,
+        handleInfoClick,
       );
       elementsContainer.appendChild(cardElement);
 
@@ -153,14 +186,82 @@ function addFormSubmitHandler(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
     });
 }
 
 addForm.addEventListener("submit", addFormSubmitHandler);
 
+const formatDate = (date) =>
+  date.toLocaleDateString("ru-RU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+const createInfoString = (term, description) => {
+  const template = document.querySelector("#popup-info-definition-template").content;
+  const element = template.cloneNode(true);
+  element.querySelector(".popup-info__term").textContent = term;
+  element.querySelector(".popup-info__description").textContent = description;
+  return element;
+};
+
+const createUserChip = (user) => {
+  const template = document.querySelector("#popup-info-user-template").content;
+  const element = template.cloneNode(true);
+  element.querySelector(".popup-info__user-chip").textContent = user.name;
+  return element;
+};
+
+const openModalWindow = (modal) => modal.classList.add("popup_opened");
+
+const handleInfoClick = (cardId) => {
+  getCardList()
+    .then((cards) => {
+      const cardData = cards.find((card) => card._id === cardId);
+      if (!cardData) return;
+
+      const cardInfoModalInfoList = cardInfoPopup.querySelector(".popup-info__list");
+      const cardInfoModalLikedList = cardInfoPopup.querySelector(".popup-info__liked-list");
+
+      cardInfoModalInfoList.innerHTML = "";
+      cardInfoModalLikedList.innerHTML = "";
+
+      cardInfoModalInfoList.append(
+        createInfoString("Описание:", cardData.name)
+      );
+
+      cardInfoModalInfoList.append(
+        createInfoString("Дата создания:", formatDate(new Date(cardData.createdAt)))
+      );
+
+      cardInfoModalInfoList.append(
+        createInfoString("Владелец:", cardData.owner.name)
+      );
+
+      cardInfoModalInfoList.append(
+        createInfoString("Количество лайков:", cardData.likes.length)
+      );
+
+      if (cardData.likes.length > 0) {
+        cardData.likes.forEach((user) => {
+          cardInfoModalLikedList.append(createUserChip(user));
+        });
+      }
+
+      openModalWindow(cardInfoPopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 let currentUserId = null;
 
-console.log("r");
 function invalidateMainPage() {
   const elementsContainer = document.querySelector(".elements");
   //  Clear all old cards
@@ -181,6 +282,7 @@ function invalidateMainPage() {
           card,
           cardTemplate,
           currentUserId,
+          handleInfoClick,
         );
         elementsContainer.appendChild(cardElement);
       });
@@ -190,7 +292,7 @@ function invalidateMainPage() {
     });
 }
 
-function createCardElement(card, cardTemplate, userId) {
+function createCardElement(card, cardTemplate, userId, handleInfoClick) {
   const cardElement = cardTemplate.cloneNode(true);
   const img = cardElement.querySelector(".element__photo");
   img.src = card.link;
@@ -230,15 +332,21 @@ function createCardElement(card, cardTemplate, userId) {
     deleteButton.remove();
   } else {
     deleteButton.addEventListener("click", () => {
+      deleteButton.disabled = true;
       deleteCard(card._id)
         .then(() => {
           deleteButton.closest(".element").remove();
         })
         .catch((err) => {
           console.log(err);
+          deleteButton.disabled = false;
         });
     });
   }
+
+  // Info button
+  const infoButton = cardElement.querySelector(".element__control-button_type_info");
+  infoButton.addEventListener("click", () => handleInfoClick(card._id));
 
   return cardElement;
 }
