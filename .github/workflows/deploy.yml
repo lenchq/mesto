@@ -3,7 +3,7 @@ name: Deploy Vite site to GitHub Pages
 on:
   push:
     branches:
-      - main           # or your default branch
+      - main # or your default branch
   workflow_dispatch:
 
 permissions:
@@ -18,6 +18,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: 
+      VITE_GROUP_ID: ${{ secrets.GROUP_ID }}
+      VITE_PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
 
     steps:
       - name: Checkout
@@ -33,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build   # Vite build to ./dist
+        run: npm run build # Vite build to ./dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
