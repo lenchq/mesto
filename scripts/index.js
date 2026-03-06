@@ -14,33 +14,32 @@ const addPopup = document.querySelector("#add-card-popup");
 const cardInfoPopup = document.querySelector("#card-info-popup");
 
 const editProfile = document.querySelector(".edit-profile"); //переменная открыть редактирование профиля
-// const closeButton = popups.querySelector(".popup__close-button"); //переменная закрыть редактирование
-const saveButton = document.querySelector(".popup__save-button"); //переменная кнопки сохранить
 const userName = document.querySelector(".profile__user-name"); //переменная касса имени профиля на странице
 const userJop = document.querySelector(".profile__user-jop"); //переменная касса работы на странице
 
 const addButton = document.querySelector(".add-button"); //переменная кнопки добавить
-const addCloseButton = addPopup.querySelector(".popup__close-button_add");
 const addForm = addPopup.querySelector(".popup__form_add");
 
-let nameInput = document.querySelector(".popup__user-name"); // Воспользуйтесь инструментом .querySelector()
-let jobInput = document.querySelector(".popup__user-jop"); // Воспользуйтесь инструментом .querySelector()
-let avatarInput = document.querySelector(".popup__user-avatar");
+const nameInput = document.querySelector(".popup__user-name"); // Воспользуйтесь инструментом .querySelector()
+const jobInput = document.querySelector(".popup__user-jop"); // Воспользуйтесь инструментом .querySelector()
+const avatarInput = document.querySelector(".popup__user-avatar");
 
-let cardNameInput = addPopup.querySelector(".popup__card-name");
-let cardLinkInput = addPopup.querySelector(".popup__card-link");
+const cardNameInput = addPopup.querySelector(".popup__card-name");
+const cardLinkInput = addPopup.querySelector(".popup__card-link");
 
 function openEditProfilePopup() {
   editProfilePopup.classList.add("popup_opened");
-  // Clear any previous errors
   const errorSpans = editProfilePopup.querySelectorAll(".popup__error");
-  errorSpans.forEach(span => span.textContent = "");
+  errorSpans.forEach((span) => {
+    span.textContent = "";
+  });
 }
 function openAddCardPopup() {
   addPopup.classList.add("popup_opened");
-  // Clear any previous errors
   const errorSpans = addPopup.querySelectorAll(".popup__error");
-  errorSpans.forEach(span => span.textContent = "");
+  errorSpans.forEach((span) => {
+    span.textContent = "";
+  });
 }
 
 function closePopup() {
@@ -79,7 +78,6 @@ const setInputValidation = (inputElement) => {
     checkFormValidity();
   });
 
-  // Initial check
   checkFormValidity();
 };
 
@@ -94,7 +92,6 @@ const setInputValidation = (inputElement) => {
 function fillProfileInputs() {
   nameInput.value = userName.textContent;
   jobInput.value = userJop.textContent;
-  // Trigger validation after filling
   [nameInput, jobInput].forEach((input) => {
     const event = new Event("input");
     input.dispatchEvent(event);
@@ -117,7 +114,7 @@ function formSubmitHandler(evt) {
 
   const submitButton = evt.target.querySelector('button[type="submit"]');
   const originalText = submitButton.textContent;
-  submitButton.textContent = 'Сохранение...';
+  submitButton.textContent = "Сохранение...";
   submitButton.disabled = true;
 
   const promises = [];
@@ -156,13 +153,12 @@ function formSubmitHandler(evt) {
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener("submit", formSubmitHandler);
 
-// Обработчик формы добавления карточки
 function addFormSubmitHandler(evt) {
   evt.preventDefault();
 
   const submitButton = evt.target.querySelector('button[type="submit"]');
   const originalText = submitButton.textContent;
-  submitButton.textContent = 'Создание...';
+  submitButton.textContent = "Создание...";
   submitButton.disabled = true;
 
   addCard({
@@ -203,7 +199,9 @@ const formatDate = (date) =>
   });
 
 const createInfoString = (term, description) => {
-  const template = document.querySelector("#popup-info-definition-template").content;
+  const template = document.querySelector(
+    "#popup-info-definition-template",
+  ).content;
   const element = template.cloneNode(true);
   element.querySelector(".popup-info__term").textContent = term;
   element.querySelector(".popup-info__description").textContent = description;
@@ -225,26 +223,32 @@ const handleInfoClick = (cardId) => {
       const cardData = cards.find((card) => card._id === cardId);
       if (!cardData) return;
 
-      const cardInfoModalInfoList = cardInfoPopup.querySelector(".popup-info__list");
-      const cardInfoModalLikedList = cardInfoPopup.querySelector(".popup-info__liked-list");
+      const cardInfoModalInfoList =
+        cardInfoPopup.querySelector(".popup-info__list");
+      const cardInfoModalLikedList = cardInfoPopup.querySelector(
+        ".popup-info__liked-list",
+      );
 
       cardInfoModalInfoList.innerHTML = "";
       cardInfoModalLikedList.innerHTML = "";
 
       cardInfoModalInfoList.append(
-        createInfoString("Описание:", cardData.name)
+        createInfoString("Описание:", cardData.name),
       );
 
       cardInfoModalInfoList.append(
-        createInfoString("Дата создания:", formatDate(new Date(cardData.createdAt)))
+        createInfoString(
+          "Дата создания:",
+          formatDate(new Date(cardData.createdAt)),
+        ),
       );
 
       cardInfoModalInfoList.append(
-        createInfoString("Владелец:", cardData.owner.name)
+        createInfoString("Владелец:", cardData.owner.name),
       );
 
       cardInfoModalInfoList.append(
-        createInfoString("Количество лайков:", cardData.likes.length)
+        createInfoString("Количество лайков:", cardData.likes.length),
       );
 
       if (cardData.likes.length > 0) {
@@ -288,7 +292,7 @@ function invalidateMainPage() {
       });
     })
     .catch((err) => {
-      console.log(err); // В случае возникновения ошибки выводим её в консоль
+      console.log(err);
     });
 }
 
@@ -303,7 +307,6 @@ function createCardElement(card, cardTemplate, userId, handleInfoClick) {
 
   const likeButton = cardElement.querySelector(".element__heart");
 
-  // Проверяем, лайкали ли мы карточку ранее
   const isLiked = card.likes.some((user) => user._id === userId);
   if (isLiked) {
     likeButton.classList.add("element__heart_active");
@@ -326,7 +329,7 @@ function createCardElement(card, cardTemplate, userId, handleInfoClick) {
       });
   });
 
-  // Показываем иконку удаления только для своих карточек
+  // delete only owned
   const deleteButton = cardElement.querySelector(".element__delete-button");
   if (card.owner._id !== userId) {
     deleteButton.remove();
@@ -344,8 +347,10 @@ function createCardElement(card, cardTemplate, userId, handleInfoClick) {
     });
   }
 
-  // Info button
-  const infoButton = cardElement.querySelector(".element__control-button_type_info");
+  // info button
+  const infoButton = cardElement.querySelector(
+    ".element__control-button_type_info",
+  );
   infoButton.addEventListener("click", () => handleInfoClick(card._id));
 
   return cardElement;
