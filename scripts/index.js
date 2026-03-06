@@ -10,19 +10,21 @@ import {
 
 const popups = document.querySelectorAll(".popup");
 const editProfilePopup = document.querySelector("#edit-profile-popup");
+const editAvatarPopup = document.querySelector("#edit-avatar-popup");
 const addPopup = document.querySelector("#add-card-popup");
 const cardInfoPopup = document.querySelector("#card-info-popup");
 
 const editProfile = document.querySelector(".edit-profile"); //переменная открыть редактирование профиля
+const avatarEditButton = document.querySelector(".profile__avatar-edit-button");
 const userName = document.querySelector(".profile__user-name"); //переменная касса имени профиля на странице
 const userJop = document.querySelector(".profile__user-jop"); //переменная касса работы на странице
 
 const addButton = document.querySelector(".add-button"); //переменная кнопки добавить
 const addForm = addPopup.querySelector(".popup__form_add");
 
-const nameInput = document.querySelector(".popup__user-name"); // Воспользуйтесь инструментом .querySelector()
-const jobInput = document.querySelector(".popup__user-jop"); // Воспользуйтесь инструментом .querySelector()
-const avatarInput = document.querySelector(".popup__user-avatar");
+const nameInput = editProfilePopup.querySelector(".popup__user-name"); // Воспользуйтесь инструментом .querySelector()
+const jobInput = editProfilePopup.querySelector(".popup__user-jop"); // Воспользуйтесь инструментом .querySelector()
+const avatarInput = editAvatarPopup.querySelector(".popup__user-avatar");
 
 const cardNameInput = addPopup.querySelector(".popup__card-name");
 const cardLinkInput = addPopup.querySelector(".popup__card-link");
@@ -34,6 +36,16 @@ function openEditProfilePopup() {
     span.textContent = "";
   });
 }
+
+function openEditAvatarPopup() {
+  editAvatarPopup.classList.add("popup_opened");
+  avatarInput.value = "";
+  const errorSpans = editAvatarPopup.querySelectorAll(".popup__error");
+  errorSpans.forEach((span) => {
+    span.textContent = "";
+  });
+}
+
 function openAddCardPopup() {
   addPopup.classList.add("popup_opened");
   const errorSpans = addPopup.querySelectorAll(".popup__error");
@@ -44,6 +56,10 @@ function openAddCardPopup() {
 
 function closePopup() {
   editProfilePopup.classList.remove("popup_opened");
+}
+
+function closeAvatarPopup() {
+  editAvatarPopup.classList.remove("popup_opened");
 }
 
 function closeAddPopup() {
@@ -103,12 +119,16 @@ editProfile.addEventListener("click", () => {
   openEditProfilePopup();
 });
 
+avatarEditButton.addEventListener("click", () => {
+  openEditAvatarPopup();
+});
+
 addButton.addEventListener("click", openAddCardPopup);
 
 // Находим форму в DOM
 let formElement = document.querySelector(".popup__form"); // Воспользуйтесь методом querySelector()
 
-// Обработчик «отправки» формы
+// Обработчик «отправки» формы профиля
 function formSubmitHandler(evt) {
   evt.preventDefault();
 
@@ -117,27 +137,13 @@ function formSubmitHandler(evt) {
   submitButton.textContent = "Сохранение...";
   submitButton.disabled = true;
 
-  const promises = [];
-
-  promises.push(
-    setUserInfo({
-      name: nameInput.value,
-      about: jobInput.value,
-    }),
-  );
-
-  if (avatarInput.value) {
-    promises.push(setUserAvatar(avatarInput.value));
-  }
-
-  Promise.all(promises)
-    .then(([userData, avatarData]) => {
+  setUserInfo({
+    name: nameInput.value,
+    about: jobInput.value,
+  })
+    .then((userData) => {
       userName.textContent = userData.name;
       userJop.textContent = userData.about;
-      if (avatarData) {
-        const avatar = document.querySelector(".profile__avatar");
-        avatar.src = avatarData.avatar;
-      }
       closePopup();
     })
     .catch((err) => {
@@ -149,9 +155,35 @@ function formSubmitHandler(evt) {
     });
 }
 
+// Обработчик обновления аватара
+function avatarFormSubmitHandler(evt) {
+  evt.preventDefault();
+
+  const submitButton = evt.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = "Сохранение...";
+  submitButton.disabled = true;
+
+  setUserAvatar(avatarInput.value)
+    .then((userData) => {
+      const avatar = document.querySelector(".profile__avatar");
+      avatar.src = userData.avatar;
+      closeAvatarPopup();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    });
+}
+
 // Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
 formElement.addEventListener("submit", formSubmitHandler);
+
+const avatarForm = editAvatarPopup.querySelector(".popup__form");
+avatarForm.addEventListener("submit", avatarFormSubmitHandler);
 
 function addFormSubmitHandler(evt) {
   evt.preventDefault();

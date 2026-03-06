@@ -1,22 +1,17 @@
 .profile__user-jop {
-	margin: 7px 0 0;
-	padding: 0;
-	font-size: 18px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	grid-area: profile__user-jop;
-}
-
-@media (max-width: 740px) {
-	.profile__user-jop {
-		margin: -15px 0 0;
-	}
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    line-height: 22px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    grid-area: description;
 }
 
 @media (max-width: 680px) {
-	.profile__user-jop {
-		font-size: 14px;
-		margin: 0 auto;
-	}
+    .profile__user-jop {
+        font-size: 14px;
+        line-height: 17px;
+    }
 }

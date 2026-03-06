@@ -6,6 +6,12 @@
 	width: 430px;
 	min-height: 330px;
 	margin: 0 auto 0;
+	transform: scale(0.7);
+	transition: transform 0.12s ease;
+}
+
+.popup_opened .popup__window {
+	transform: scale(1);
 }
 
 @media (max-width: 580px) {

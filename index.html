@@ -12,12 +12,17 @@
 	</header>
 
 	<section class="profile root__profile">
-		<img alt="Фото профеля" class="profile__avatar">
+		<div class="profile__avatar-container">
+			<img alt="Фото профиля" class="profile__avatar">
+			<button type="button" class="profile__avatar-edit-button"></button>
+		</div>
+		<div class="profile__info">
 			<h1 class="profile__user-name"></h1>
 			<p class="profile__user-jop"></p>
 			<button type="button" class="edit-profile profile__edit-profile">
 				<img src="./images/icon-edit.svg" alt="Редактировать профиль" class="edit-profile__icon">
 			</button>
+		</div>
 		<button type="button" class="add-button profile__add-button">
 			<img src="./images/icon-add.svg" alt="Добавить" class="add-button__icon">
 		</button>
@@ -46,13 +51,23 @@
 
 	<div id="edit-profile-popup" class="popup">
 		<section class="popup__window">
-			<button class="popup__close-button"></button>
+			<button type="button" class="popup__close-button"></button>
 			<form class="popup__form">
 				<h3 class="popup__title">Редактировать профиль</h3>
 				<input type="text" name="user-name" class="popup__user-name">
 				<span class="popup__error popup__error_user-name"></span>
 				<input type="text" name="user-jop" class="popup__user-jop">
 				<span class="popup__error popup__error_user-jop"></span>
+				<button type="submit" class="popup__save-button">Сохранить</button>
+			</form>
+		</section>
+	</div>
+
+	<div id="edit-avatar-popup" class="popup">
+		<section class="popup__window">
+			<button type="button" class="popup__close-button"></button>
+			<form class="popup__form">
+				<h3 class="popup__title">Обновить аватар</h3>
 				<input type="url" name="user-avatar" class="popup__user-avatar" placeholder="Ссылка на аватар">
 				<span class="popup__error popup__error_user-avatar"></span>
 				<button type="submit" class="popup__save-button">Сохранить</button>
@@ -62,7 +77,7 @@
 
 	<div id="add-card-popup" class="popup">
 		<section class="popup__window">
-			<button class="popup__close-button popup__close-button_add"></button>
+			<button type="button" class="popup__close-button popup__close-button_add"></button>
 			<form class="popup__form popup__form_add">
 				<h3 class="popup__title">Новое место</h3>
 				<input type="text" name="card-name" class="popup__card-name" placeholder="Название" minlength="2">
@@ -76,7 +91,7 @@
 
 	<div id="card-info-popup" class="popup popup_type_info">
 		<section class="popup__window">
-			<button class="popup__close-button"></button>
+			<button type="button" class="popup__close-button"></button>
 			<div class="popup-info">
 				<h3 class="popup-info__title">Информация о карточке</h3>
 				<ul class="popup-info__list"></ul>

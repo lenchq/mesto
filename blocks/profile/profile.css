@@ -1,40 +1,48 @@
 .profile {
-	display: grid;
-	max-width: 880px;
-	height: 120px;
-	grid-template-areas: 
-	"profile__avatar profile__user-name edit-profile add-button"
-	"profile__avatar profile__user-jop edit-profile add-button";
-	grid-template-columns: 150px 312px 1fr 150px;
-	grid-template-rows: 72px 1fr;
+    display: flex;
+    max-width: 880px;
+    margin: 0 auto;
+    padding-top: 40px;
+    align-items: center;
 }
 
-
-@media (max-width: 740px) {
-	.profile {
-		grid-template-areas: 
-		"profile__avatar profile__user-name edit-profile"
-		"profile__avatar profile__user-jop edit-profile"
-		"add-button add-button add-button";
-		grid-template-columns: 150px 312px 1fr;
-		grid-template-rows: 90px 30px 70px;
-		max-width: 581px;
-		height: 190px;
-	}
+.profile__info {
+    display: grid;
+    grid-template-areas: 
+        "name edit"
+        "description description";
+    grid-template-columns: auto 1fr;
+    margin-left: 30px;
+    column-gap: 18px;
+    row-gap: 16px;
+    align-items: center;
 }
 
+@media (max-width: 880px) {
+    .profile {
+        padding-left: 19px;
+        padding-right: 19px;
+    }
+}
 
 @media (max-width: 680px) {
-	.profile {
-		width: 282px;
-		height: 286px;
-		grid-template-areas: 
-		"profile__avatar profile__avatar profile__avatar"
-		"null profile__user-name edit-profile"
-		"profile__user-jop profile__user-jop profile__user-jop"
-		"add-button add-button add-button";
-		grid-template-columns: 1fr 189px 1fr;
-		grid-template-rows: 140px 1fr 1fr 50px;
-	}
+    .profile {
+        flex-direction: column;
+        padding-top: 42px;
+    }
+
+    .profile__info {
+        margin-left: 0;
+        margin-top: 26px;
+        grid-template-areas: 
+            "name edit"
+            "description description";
+        grid-template-columns: auto 1fr;
+        justify-items: center;
+        text-align: center;
+        column-gap: 10px;
+        row-gap: 14px;
+        width: 100%;
+    }
 }
 
