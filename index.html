@@ -12,9 +12,9 @@
 	</header>
 
 	<section class="profile root__profile">
-		<img src="./images/avatar.jpg" alt="Фото профеля" class="profile__avatar">
-			<h1 class="profile__user-name">Жак-Ив Кусто</h1>
-			<p class="profile__user-jop">Исследователь океана</p>
+		<img alt="Фото профеля" class="profile__avatar">
+			<h1 class="profile__user-name"></h1>
+			<p class="profile__user-jop"></p>
 			<button type="button" class="edit-profile profile__edit-profile">
 				<img src="./images/icon-edit.svg" alt="Редактировать профиль" class="edit-profile__icon">
 			</button>
@@ -23,71 +23,50 @@
 		</button>
 	</section>
 
-	<section class="elements root__elements">
-		<div class="element">
-			<img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото" class="element__photo">
-			<div class="element__text">
-				<h2 class="element__title">Карачаевск</h2>
-				<div class="element__heart"></div>
-			</div>
-		</div>
+	<section class="elements root__elements"></section>
 
+	<template id="card-template">
 		<div class="element">
-			<img src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото" class="element__photo">
+			<button type="button" class="element__delete-button"></button>
+			<img alt="фото" class="element__photo">
 			<div class="element__text">
-				<h2 class="element__title">Гора Эльбрус</h2>
-				<div class="element__heart"></div>
+				<h2 class="element__title"></h2>
+				<div class="element__heart-container">
+					<div class="element__heart"></div>
+					<span class="element__heart-count"></span>
+				</div>
 			</div>
 		</div>
-
-		<div class="element">
-			<img src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото" class="element__photo">
-			<div class="element__text">
-				<h2 class="element__title">Домбай</h2>
-				<div class="element__heart"></div>
-			</div>
-		</div>
-
-		<div class="element">
-			<img src="./images/kirill-pershin-1404681-unsplash.jpg" alt="фото" class="element__photo">
-			<div class="element__text">
-				<h2 class="element__title">Гора Эльбрус</h2>
-				<div class="element__heart"></div>
-			</div>
-		</div>
-
-		<div class="element">
-			<img src="./images/kirill-pershin-1556355-unsplash.jpg" alt="фото" class="element__photo">
-			<div class="element__text">
-				<h2 class="element__title">Домбай</h2>
-				<div class="element__heart"></div>
-			</div>
-		</div>
-
-		<div class="element">
-			<img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фото" class="element__photo">
-			<div class="element__text">
-				<h2 class="element__title">Карачаево-Черкессия</h2>
-				<div class="element__heart"></div>
-			</div>
-		</div>
-	</section>
+	</template>
 
 	<footer class="footer root__footer">
 		<p class="footer__copyright">&#64; 2020 Mesto Russia</p>
 	</footer>
 
-	<div class="popup popup_opened">
+	<div id="edit-profile-popup" class="popup">
 		<section class="popup__window">
 			<button class="popup__close-button"></button>
 			<form class="popup__form">
 				<h3 class="popup__title">Редактировать профиль</h3>
 				<input type="text" name="user-name" class="popup__user-name">
 				<input type="text" name="user-jop" class="popup__user-jop">
+				<input type="url" name="user-avatar" class="popup__user-avatar" placeholder="Ссылка на аватар">
 				<button type="submit" class="popup__save-button">Сохранить</button>
 			</form>
 		</section>
 	</div>
-	<script src="./scripts/index.js"></script>
+
+	<div id="add-card-popup" class="popup">
+		<section class="popup__window">
+			<button class="popup__close-button popup__close-button_add"></button>
+			<form class="popup__form popup__form_add">
+				<h3 class="popup__title">Новое место</h3>
+				<input type="text" name="card-name" class="popup__card-name" placeholder="Название">
+				<input type="url" name="card-link" class="popup__card-link" placeholder="Ссылка на картинку">
+				<button type="submit" class="popup__save-button">Создать</button>
+			</form>
+		</section>
+	</div>
+	<script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

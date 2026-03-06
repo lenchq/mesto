@@ -8,3 +8,15 @@ align-items: center;
 border-radius: 0 0 10px 10px;
 height: 80px;
 }
+
+.element__heart-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-right: 20px;
+}
+
+.element__heart-count {
+	font-size: 13px;
+	line-height: 1.2;
+}

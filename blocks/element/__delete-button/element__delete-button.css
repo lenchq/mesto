@@ -1,0 +1,32 @@
+.element__delete-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 18px;
+  height: 19px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.3s ease;
+}
+
+.element__delete-button::before,
+.element__delete-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 2px;
+  background-color: #fff;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.element__delete-button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.element__delete-button:hover {
+  opacity: 0.6;
+}
