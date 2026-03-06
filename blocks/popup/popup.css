@@ -13,3 +13,7 @@
 	opacity: 0;
 	transition: visibility 0s linear 0.3s, opacity 0.3s linear;
 }
+
+.popup__input_type_error {
+	border-bottom-color: #FF0000;
+}

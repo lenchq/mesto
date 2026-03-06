@@ -13,7 +13,7 @@
 
 	<section class="profile root__profile">
 		<div class="profile__avatar-container">
-			<img alt="Фото профиля" class="profile__avatar">
+			<img alt="Фото профиля" class="profile__avatar" src="">
 			<button type="button" class="profile__avatar-edit-button"></button>
 		</div>
 		<div class="profile__info">
@@ -52,11 +52,11 @@
 	<div id="edit-profile-popup" class="popup">
 		<section class="popup__window">
 			<button type="button" class="popup__close-button"></button>
-			<form class="popup__form">
+			<form class="popup__form" name="edit-profile" novalidate>
 				<h3 class="popup__title">Редактировать профиль</h3>
-				<input type="text" name="user-name" class="popup__user-name">
+				<input type="text" name="user-name" class="popup__input popup__user-name" minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
 				<span class="popup__error popup__error_user-name"></span>
-				<input type="text" name="user-jop" class="popup__user-jop">
+				<input type="text" name="user-jop" class="popup__input popup__user-jop" minlength="2" maxlength="200" required>
 				<span class="popup__error popup__error_user-jop"></span>
 				<button type="submit" class="popup__save-button">Сохранить</button>
 			</form>
@@ -66,11 +66,11 @@
 	<div id="edit-avatar-popup" class="popup">
 		<section class="popup__window">
 			<button type="button" class="popup__close-button"></button>
-			<form class="popup__form">
+			<form class="popup__form" name="edit-avatar" novalidate>
 				<h3 class="popup__title">Обновить аватар</h3>
-				<input type="url" name="user-avatar" class="popup__user-avatar" placeholder="Ссылка на аватар">
+				<input type="url" name="user-avatar" class="popup__input popup__user-avatar" placeholder="Ссылка на аватар" required>
 				<span class="popup__error popup__error_user-avatar"></span>
-				<button type="submit" class="popup__save-button">Сохранить</button>
+				<button type="submit" class="popup__save-button popup__save-button_disabled" disabled>Сохранить</button>
 			</form>
 		</section>
 	</div>
@@ -78,13 +78,13 @@
 	<div id="add-card-popup" class="popup">
 		<section class="popup__window">
 			<button type="button" class="popup__close-button popup__close-button_add"></button>
-			<form class="popup__form popup__form_add">
+			<form class="popup__form popup__form_add" name="new-place" novalidate>
 				<h3 class="popup__title">Новое место</h3>
-				<input type="text" name="card-name" class="popup__card-name" placeholder="Название" minlength="2">
+				<input type="text" name="card-name" class="popup__input popup__card-name" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
 				<span class="popup__error popup__error_card-name"></span>
-				<input type="url" name="card-link" class="popup__card-link" placeholder="Ссылка на картинку">
+				<input type="url" name="card-link" class="popup__input popup__card-link" placeholder="Ссылка на картинку" required>
 				<span class="popup__error popup__error_card-link"></span>
-				<button type="submit" class="popup__save-button">Создать</button>
+				<button type="submit" class="popup__save-button popup__save-button_disabled" disabled>Создать</button>
 			</form>
 		</section>
 	</div>
@@ -99,6 +99,14 @@
 				<ul class="popup-info__liked-list"></ul>
 			</div>
 		</section>
+	</div>
+
+	<div id="image-popup" class="popup popup_type_image">
+		<div class="popup__image-container">
+			<button type="button" class="popup__close-button"></button>
+			<img class="popup__image" src="#" alt="">
+			<p class="popup__caption"></p>
+		</div>
 	</div>
 
 	<template id="popup-info-definition-template">
